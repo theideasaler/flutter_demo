@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'question.dart';
-import 'answer.dart';
+import 'domain.dart';
+import 'quiz.dart';
+import 'result.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,28 +14,45 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final questions = [
+  final _questions = [
     {
       'question': "What's your first pet's name?",
-      'answer': ['Rice', 'Four Try'],
+      'answer': [
+        {'text': 'Rice', 'score': 10},
+        {'text': 'Four Try', 'score': 3},
+      ],
     },
     {
       'question': "Whats's your first pet's birthday?",
-      'answer': ['2021-01-25', '2021-03-26', '2021-01-08'],
+      'answer': [
+        {'text': '2021-01-25', 'score': 4},
+        {'text': '2021-03-26', 'score': 6},
+        {'text': '2021-01-08', 'score': 8},
+      ],
     },
     {
       'question': 'How many pets do you have?',
-      'answer': ['1', '2', '3'],
+      'answer': [
+        {'text': '1', 'score': 3},
+        {'text': '2', 'score': 5},
+        {'text': '3', 'score': 7},
+      ],
     },
     {
       'question': 'How many times do you feed your pet per day?',
-      'answer': ['2', '3', '4', '5'],
+      'answer': [
+        {'text': '3', 'score': 2},
+        {'text': '7', 'score': 1},
+        {'text': '8', 'score': 4},
+      ],
     },
   ];
   var _currentQuestionIndex = 0;
+  var _totalScore = 0;
 
-  _onConfirmCliked() {
+  _onConfirmCliked(int score) {
     setState(() {
+      _totalScore += score;
       _currentQuestionIndex++;
     });
     print(_currentQuestionIndex);
@@ -47,24 +65,16 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Paw Homie'),
         ),
-        body: Column(children: [
-          Row(children: [
-            Expanded(
-              child: Question(questions[_currentQuestionIndex]['question']),
-            )
-          ]),
-          ...(questions[_currentQuestionIndex]['answer'] as List<String>)
-              .map((ans) => Row(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Answer(_onConfirmCliked, ans),
-                        ),
-                      )
-                    ],
-                  ))
-              .toList(),
-        ]),
+        body: _currentQuestionIndex < _questions.length
+            ? Quiz(
+                questions: _questions,
+                questionIndex: _currentQuestionIndex,
+                answerQuestion: _onConfirmCliked,
+              )
+            : Result(
+                text: 'Your Score',
+                score: _totalScore,
+              ),
       ),
     );
   }
