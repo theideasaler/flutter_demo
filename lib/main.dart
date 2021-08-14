@@ -61,6 +61,7 @@ class _MyAppState extends State<MyApp> {
   _restartQuiz() {
     setState(() {
       _currentQuestionIndex = 0;
+      _totalScore = 0;
     });
   }
   
