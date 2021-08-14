@@ -4,12 +4,17 @@ import 'package:flutter/widgets.dart';
 class Result extends StatelessWidget {
   final String text;
   final int score;
+  final VoidCallback restartAction;
 
   String get resultText {
     return '$score';
   }
 
-  const Result({Key? key, required this.text, required this.score})
+  const Result(
+      {Key? key,
+      required this.text,
+      required this.score,
+      required this.restartAction})
       : super(key: key);
 
   @override
@@ -38,6 +43,19 @@ class Result extends StatelessWidget {
                   color: Colors.redAccent,
                 ),
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: restartAction,
+                icon: Icon(
+                  Icons.refresh,
+                  color: Colors.white,
+                ),
+                label: Text('Restart'),
+              )
             ],
           ),
         ],
